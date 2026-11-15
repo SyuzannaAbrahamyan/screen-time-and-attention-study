@@ -647,23 +647,53 @@
 
   function generateStroopTrials(count) {
     const trials = [];
-    for (let i = 0; i < count; i++) {
-      const isMatch = i % 2 === 0;
-      const wordObj = colors[i % colors.length];
-      let inkObj = wordObj;
-      if (!isMatch) {
-        const others = colors.filter(c => c.name !== wordObj.name);
-        inkObj = others[Math.floor(Math.random() * others.length)];
-      }
-      trials.push({ word: wordObj.name, inkName: inkObj.name, ink: inkObj.hex, isMatch });
+    if (count === 4) {
+      // Balanced 4-trial practice block (2 Match, 2 Mismatch, no repeated words/inks)
+      return [
+        { word: "RED", inkName: "RED", ink: "#dc2626", isMatch: true },
+        { word: "BLUE", inkName: "GREEN", ink: "#16a34a", isMatch: false },
+        { word: "YELLOW", inkName: "YELLOW", ink: "#ca8a04", isMatch: true },
+        { word: "GREEN", inkName: "RED", ink: "#dc2626", isMatch: false }
+      ];
     }
-    // Shuffle while preventing immediate identical word repetition
+
+    // 1. Build 16 exact congruent trials (4 of each color)
+    for (let rep = 0; rep < 4; rep++) {
+      colors.forEach(c => {
+        trials.push({ word: c.name, inkName: c.name, ink: c.hex, isMatch: true });
+      });
+    }
+
+    // 2. Build all 12 unique incongruent pairs + 4 balanced pairs = 16 incongruent trials
+    const allMismatches = [];
+    colors.forEach(w => {
+      colors.forEach(ink => {
+        if (w.name !== ink.name) {
+          allMismatches.push({ word: w.name, inkName: ink.name, ink: ink.hex, isMatch: false });
+        }
+      });
+    });
+    // Shuffle the 12 unique mismatches and take 4 extra (1 per word) for exact 16-trial balance
+    allMismatches.sort(() => Math.random() - 0.5);
+    const extra4 = colors.map(w => allMismatches.find(m => m.word === w.name));
+    trials.push(...allMismatches, ...extra4);
+
+    // 3. Constrained shuffle:
+    //    - Never repeat the same word back-to-back
+    //    - Never repeat the same ink color back-to-back
+    //    - Never repeat the same correct key (Match/Mismatch) more than 3 times in a row
     let valid = false;
     while (!valid) {
       trials.sort(() => Math.random() - 0.5);
       valid = true;
+      let streak = 1;
       for (let i = 1; i < trials.length; i++) {
-        if (trials[i].word === trials[i - 1].word) {
+        if (trials[i].word === trials[i - 1].word || trials[i].inkName === trials[i - 1].inkName) {
+          valid = false;
+          break;
+        }
+        streak = (trials[i].isMatch === trials[i - 1].isMatch) ? streak + 1 : 1;
+        if (streak > 3) {
           valid = false;
           break;
         }
