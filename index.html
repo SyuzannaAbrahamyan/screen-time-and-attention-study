@@ -17,7 +17,6 @@
       align-items: flex-start;
       min-height: 100vh;
     }
-    /* Persistent Top ID Banner */
     .id-banner {
       position: fixed;
       top: 0;
@@ -133,6 +132,7 @@
     }
     .sart-digit { font-size: 96px; font-weight: 700; color: #111827; }
     .stroop-word { font-size: 64px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    .countdown-text { font-size: 36px; font-weight: 700; color: #2563eb; text-align: center; }
     .feedback-text { font-size: 20px; font-weight: 600; margin-top: 12px; height: 28px; }
     .key-legend {
       display: flex;
@@ -284,14 +284,14 @@
   <!-- SCREEN 4: SART INSTRUCTIONS -->
   <div id="screen-sart-intro" class="card hidden">
     <h2>Task 1: Number Response Task</h2>
-    <p>Single numbers from <strong>1 to 9</strong> will flash quickly in the center of the screen.</p>
+    <p>Single numbers from <strong>1 to 9</strong> will appear in the center of the screen at a steady pace.</p>
     <ul>
-      <li>Press the <strong>SPACEBAR</strong> as fast as possible whenever you see any number (1, 2, 4, 5, 6, 7, 8, or 9).</li>
+      <li>Press the <strong>SPACEBAR</strong> quickly whenever you see any number (1, 2, 4, 5, 6, 7, 8, or 9).</li>
       <li><strong>DO NOT PRESS</strong> anything when the number <strong>3</strong> appears. Hold back and wait for the next number.</li>
     </ul>
-    <p>You will start with a short <strong>6-trial practice round</strong> with feedback before the main task begins.</p>
+    <p>Place your hand comfortably on the <strong>SPACEBAR</strong> now. You will start with a short <strong>6-trial practice round</strong> with feedback.</p>
     <div class="center">
-      <button class="btn" onclick="startSART(true)">Start Practice Round</button>
+      <button class="btn" onclick="startSARTWithCountdown(true)">Start Practice Round</button>
     </div>
   </div>
 
@@ -311,23 +311,23 @@
   <!-- SCREEN 6: SART TRANSITION TO MAIN -->
   <div id="screen-sart-ready" class="card hidden center">
     <h2>Practice Complete!</h2>
-    <p>Great job. Remember: press <strong>SPACEBAR</strong> as quickly as possible for every number <em>except</em> <strong>3</strong>.</p>
-    <p>The main recorded task will now begin (36 quick trials, ~45 seconds).</p>
-    <button class="btn" onclick="startSART(false)">Start Main Task 1</button>
+    <p>Rest your hand on the <strong>SPACEBAR</strong>. Remember: press quickly for every number <em>except</em> <strong>3</strong>.</p>
+    <p>The main recorded task will begin after a 3-second countdown (36 trials, ~50 seconds).</p>
+    <button class="btn" onclick="startSARTWithCountdown(false)">Start Main Task 1</button>
   </div>
 
   <!-- SCREEN 7: STROOP INSTRUCTIONS -->
   <div id="screen-stroop-intro" class="card hidden">
     <h2>Task 2: Color-Word Matching Task</h2>
-    <p>In this task, color words (such as <em>red</em>, <em>blue</em>, <em>green</em>, or <em>yellow</em>) will appear on the screen printed in colored ink.</p>
+    <p>Color words (such as <em>red</em>, <em>blue</em>, <em>green</em>, or <em>yellow</em>) will appear on the screen printed in colored ink.</p>
     <p>Decide as quickly and accurately as possible whether the <strong>ink color matches the written word</strong>:</p>
     <ul>
       <li>Press <strong>F</strong> if the ink color <strong>MATCHES</strong> the word (e.g., "red" printed in red ink).</li>
       <li>Press <strong>J</strong> if the ink color <strong>DOES NOT MATCH</strong> the word (e.g., "red" printed in blue ink).</li>
     </ul>
-    <p>You will begin with a <strong>4-trial practice round</strong> with feedback.</p>
+    <p>Rest your left index finger on <strong>F</strong> and right index finger on <strong>J</strong>. You will begin with a <strong>4-trial practice round</strong>.</p>
     <div class="center">
-      <button class="btn" onclick="startStroop(true)">Start Practice Round</button>
+      <button class="btn" onclick="startStroopWithCountdown(true)">Start Practice Round</button>
     </div>
   </div>
 
@@ -348,8 +348,8 @@
   <div id="screen-stroop-ready" class="card hidden center">
     <h2>Practice Complete!</h2>
     <p>Place your left index finger on <strong>F</strong> (Match) and your right index finger on <strong>J</strong> (Mismatch).</p>
-    <p>The main recorded task will now begin (24 trials).</p>
-    <button class="btn" onclick="startStroop(false)">Start Main Task 2</button>
+    <p>The main recorded task will begin after a 3-second countdown (24 trials).</p>
+    <button class="btn" onclick="startStroopWithCountdown(false)">Start Main Task 2</button>
   </div>
 
   <!-- SCREEN 10: COMPLETION & DEBRIEFING -->
@@ -357,13 +357,13 @@
     <h2>Study Complete — Thank You!</h2>
     <div class="id-callout">
       <strong>Completed Session ID: <span id="end-id-display" style="font-family:monospace; font-size:15px;"></span></strong><br/>
-      Your results have been automatically synced to the cloud sheet and logged on this lab station (<span id="station-count">1</span> participant(s) logged on this computer).
+      Your summary and detailed trial results have been automatically synced to the cloud spreadsheet and logged on this lab station (<span id="station-count">1</span> participant(s) logged on this computer).
     </div>
     <p><strong>Debriefing:</strong> Thank you for participating in this research study. The purpose of this project is to examine whether daily social media screen time is associated with sustained attention slips (measured by the number task) and cognitive interference control (measured by the color-word matching task).</p>
     <p>Please remain quietly seated until everyone in your session has finished.</p>
     
     <div style="background:#f3f4f6; padding:16px; border-radius:8px; margin-top:20px;">
-      <p style="margin-top:0; font-weight:600;">Session Data & Researcher Controls:</p>
+      <p style="margin-top:0; font-weight:600;">Session Data & Researcher Backup Controls:</p>
       <pre id="summary-output" style="font-size:12.5px; overflow-x:auto; background:#fff; padding:10px; border-radius:6px; border:1px solid #d1d5db;"></pre>
       <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">
         <button class="btn btn-green" onclick="downloadMasterCSV()">Download Master Station CSV (All Participants)</button>
@@ -376,7 +376,6 @@
 <script>
   const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbygiixAbglZL54q0oblIm8waU_FhT8XuTUCuaSTkPB7u9fgebqpshzyqeREZhlaqEB4KA/exec";
 
-  // Generate unique anonymous ID on load and display everywhere
   const sessionID = "SUB_" + Math.floor(100000 + Math.random() * 900000);
   document.getElementById("top-id-display").textContent = sessionID;
   document.getElementById("consent-id-display").textContent = sessionID;
@@ -405,6 +404,23 @@
     document.querySelectorAll(".card").forEach(el => el.classList.add("hidden"));
     document.getElementById(screenId).classList.remove("hidden");
     window.scrollTo(0, 0);
+  }
+
+  function runCountdown(displayEl, callback) {
+    let count = 3;
+    displayEl.className = "countdown-text";
+    displayEl.style.color = "#2563eb";
+    displayEl.textContent = `Get Ready... ${count}`;
+
+    const interval = setInterval(() => {
+      count--;
+      if (count > 0) {
+        displayEl.textContent = `Get Ready... ${count}`;
+      } else {
+        clearInterval(interval);
+        callback();
+      }
+    }, 1000);
   }
 
   function submitScreenTime() {
@@ -485,7 +501,7 @@
     return seq;
   }
 
-  function startSART(isPractice) {
+  function startSARTWithCountdown(isPractice) {
     sartIsPractice = isPractice;
     sartTrials = generateSARTSequence(isPractice);
     sartIndex = 0;
@@ -493,8 +509,14 @@
     document.getElementById("sart-header").textContent = isPractice ? "Practice Round" : "Task 1: Number Task";
     document.getElementById("sart-feedback").textContent = "";
     goToScreen("screen-sart-task");
-    document.addEventListener("keydown", handleSARTKey);
-    runNextSARTTrial();
+
+    const displayEl = document.getElementById("sart-display");
+    runCountdown(displayEl, () => {
+      displayEl.className = "sart-digit";
+      displayEl.style.color = "#111827";
+      document.addEventListener("keydown", handleSARTKey);
+      runNextSARTTrial();
+    });
   }
 
   function runNextSARTTrial() {
@@ -514,7 +536,7 @@
     setTimeout(() => {
       if (document.getElementById("screen-sart-task").classList.contains("hidden")) return;
       displayEl.textContent = "+";
-    }, 350);
+    }, 400);
 
     setTimeout(() => {
       if (!sartResponded) {
@@ -526,7 +548,7 @@
       }
       sartIndex++;
       runNextSARTTrial();
-    }, 1150);
+    }, 1350);
   }
 
   function handleSARTKey(e) {
@@ -625,7 +647,7 @@
     return trials.sort(() => Math.random() - 0.5);
   }
 
-  function startStroop(isPractice) {
+  function startStroopWithCountdown(isPractice) {
     stroopIsPractice = isPractice;
     stroopTrials = generateStroopTrials(isPractice ? 4 : 24);
     stroopIndex = 0;
@@ -633,8 +655,13 @@
     document.getElementById("stroop-header").textContent = isPractice ? "Practice Round" : "Task 2: Color-Word Task";
     document.getElementById("stroop-feedback").textContent = "";
     goToScreen("screen-stroop-task");
-    document.addEventListener("keydown", handleStroopKey);
-    runNextStroopTrial();
+
+    const displayEl = document.getElementById("stroop-display");
+    runCountdown(displayEl, () => {
+      displayEl.className = "stroop-word";
+      document.addEventListener("keydown", handleStroopKey);
+      runNextStroopTrial();
+    });
   }
 
   function runNextStroopTrial() {
@@ -656,7 +683,7 @@
       displayEl.style.color = trial.ink;
       stroopTrialStart = performance.now();
       stroopAccepting = true;
-    }, 400);
+    }, 600);
   }
 
   function handleStroopKey(e) {
@@ -686,10 +713,12 @@
       setTimeout(() => {
         stroopIndex++;
         runNextStroopTrial();
-      }, 900);
+      }, 1000);
     } else {
-      stroopIndex++;
-      runNextStroopTrial();
+      setTimeout(() => {
+        stroopIndex++;
+        runNextStroopTrial();
+      }, 200);
     }
   }
 
@@ -731,9 +760,7 @@
     completeStudy();
   }
 
-  // ==========================================
-  // CLOUD SYNC + LOCAL STATION STORAGE & CSV EXPORTS
-  // ==========================================
+  // DUAL-TAB CLOUD SYNC + LOCAL STATION STORAGE
   const STORAGE_KEY = "psyc200_gcc_master_dataset";
 
   function saveToStationMasterList(record) {
@@ -753,13 +780,15 @@
     goToScreen("screen-end");
     document.getElementById("summary-output").textContent = JSON.stringify(studyData, null, 2);
 
-    // Silently push participant row to live Google Sheet
     if (GOOGLE_SHEET_WEBHOOK_URL && GOOGLE_SHEET_WEBHOOK_URL.startsWith("http")) {
       fetch(GOOGLE_SHEET_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(studyData)
+        body: JSON.stringify({
+          summary: studyData,
+          trials: detailedTrialLog
+        })
       }).catch(err => console.error("Cloud sync error:", err));
     }
   }
