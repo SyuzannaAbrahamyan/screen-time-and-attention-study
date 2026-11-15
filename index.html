@@ -357,7 +357,7 @@
     <h2>Study Complete — Thank You!</h2>
     <div class="id-callout">
       <strong>Completed Session ID: <span id="end-id-display" style="font-family:monospace; font-size:15px;"></span></strong><br/>
-      Your results have been automatically added to this lab station's master participant log (<span id="station-count">1</span> participant(s) logged on this computer).
+      Your results have been automatically synced to the cloud sheet and logged on this lab station (<span id="station-count">1</span> participant(s) logged on this computer).
     </div>
     <p><strong>Debriefing:</strong> Thank you for participating in this research study. The purpose of this project is to examine whether daily social media screen time is associated with sustained attention slips (measured by the number task) and cognitive interference control (measured by the color-word matching task).</p>
     <p>Please remain quietly seated until everyone in your session has finished.</p>
@@ -374,6 +374,8 @@
   </div>
 
 <script>
+  const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbygiixAbglZL54q0oblIm8waU_FhT8XuTUCuaSTkPB7u9fgebqpshzyqeREZhlaqEB4KA/exec";
+
   // Generate unique anonymous ID on load and display everywhere
   const sessionID = "SUB_" + Math.floor(100000 + Math.random() * 900000);
   document.getElementById("top-id-display").textContent = sessionID;
@@ -730,7 +732,7 @@
   }
 
   // ==========================================
-  // CUMULATIVE STORAGE & DUAL CSV DOWNLOADS
+  // CLOUD SYNC + LOCAL STATION STORAGE & CSV EXPORTS
   // ==========================================
   const STORAGE_KEY = "psyc200_gcc_master_dataset";
 
@@ -750,10 +752,16 @@
     document.getElementById("station-count").textContent = masterList.length;
     goToScreen("screen-end");
     document.getElementById("summary-output").textContent = JSON.stringify(studyData, null, 2);
-    
-    // Auto-download both the single summary and detailed trial log
-    downloadSingleCSV();
-    setTimeout(downloadDetailedTrialsCSV, 400);
+
+    // Silently push participant row to live Google Sheet
+    if (GOOGLE_SHEET_WEBHOOK_URL && GOOGLE_SHEET_WEBHOOK_URL.startsWith("http")) {
+      fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(studyData)
+      }).catch(err => console.error("Cloud sync error:", err));
+    }
   }
 
   const summaryHeaders = [
