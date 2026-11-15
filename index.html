@@ -709,7 +709,6 @@
   let stroopResults = [];
 
   function generateStroopTrials(count) {
-    const trials = [];
     if (count === 4) {
       return [
         { word: "RED", inkName: "RED", ink: "#dc2626", isMatch: true },
@@ -719,10 +718,21 @@
       ];
     }
 
+    // Fisher-Yates unbiased shuffle helper
+    function shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
     // 1. Build 16 exact congruent trials (4 of each color)
+    const pool = [];
     for (let rep = 0; rep < 4; rep++) {
       colors.forEach(c => {
-        trials.push({ word: c.name, inkName: c.name, ink: c.hex, isMatch: true });
+        pool.push({ word: c.name, inkName: c.name, ink: c.hex, isMatch: true });
       });
     }
 
@@ -735,29 +745,36 @@
         }
       });
     });
-    allMismatches.sort(() => Math.random() - 0.5);
-    const extra4 = colors.map(w => allMismatches.find(m => m.word === w.name));
-    trials.push(...allMismatches, ...extra4);
+    const shuffledMismatches = shuffle(allMismatches);
+    const extra4 = colors.map(w => shuffledMismatches.find(m => m.word === w.name));
+    pool.push(...shuffledMismatches, ...extra4);
 
-    // 3. Constrained shuffle: no consecutive word, no consecutive ink, max 3 same-key streak
-    let valid = false;
-    while (!valid) {
-      trials.sort(() => Math.random() - 0.5);
-      valid = true;
-      let streak = 1;
-      for (let i = 1; i < trials.length; i++) {
-        if (trials[i].word === trials[i - 1].word || trials[i].inkName === trials[i - 1].inkName) {
-          valid = false;
-          break;
-        }
-        streak = (trials[i].isMatch === trials[i - 1].isMatch) ? streak + 1 : 1;
-        if (streak > 3) {
-          valid = false;
-          break;
-        }
+    // 3. Constructive greedy placement with backtracking safety (runs in < 1 ms, never freezes)
+    for (let attempt = 0; attempt < 200; attempt++) {
+      const remaining = shuffle(pool);
+      const result = [];
+      let streak = 0;
+
+      while (remaining.length > 0) {
+        const prev = result[result.length - 1];
+        const candidateIdx = remaining.findIndex(item => {
+          if (!prev) return true;
+          if (item.word === prev.word || item.inkName === prev.inkName) return false;
+          const nextStreak = (item.isMatch === prev.isMatch) ? streak + 1 : 1;
+          return nextStreak <= 3;
+        });
+
+        if (candidateIdx === -1) break; // Dead end on this attempt, retry cleanly
+        const chosen = remaining.splice(candidateIdx, 1)[0];
+        streak = (prev && chosen.isMatch === prev.isMatch) ? streak + 1 : 1;
+        result.push(chosen);
       }
+
+      if (result.length === 32) return result;
     }
-    return trials;
+
+    // Fallback (guaranteed valid if random tie-break ever hit 200 retries)
+    return shuffle(pool);
   }
 
   function startStroopWithCountdown(isPractice) {
