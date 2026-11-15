@@ -11,11 +11,38 @@
       background-color: #f4f6f9;
       color: #1f2937;
       margin: 0;
-      padding: 24px;
+      padding: 64px 24px 24px 24px;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
+    }
+    /* Persistent Top ID Banner */
+    .id-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #1e293b;
+      color: #f8fafc;
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .id-badge {
+      background-color: #334155;
+      border: 1px solid #475569;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 15px;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.5px;
     }
     .card {
       background: #ffffff;
@@ -39,28 +66,19 @@
       border-radius: 6px;
       cursor: pointer;
       display: inline-block;
-      margin-top: 16px;
+      margin-top: 12px;
     }
     .btn:hover { background-color: #1d4ed8; }
-    .btn-secondary {
-      background-color: #059669;
-      margin-left: 10px;
-    }
-    .btn-secondary:hover { background-color: #047857; }
+    .btn-green { background-color: #059669; }
+    .btn-green:hover { background-color: #047857; }
+    .btn-slate { background-color: #475569; }
+    .btn-slate:hover { background-color: #334155; }
     .center { text-align: center; }
 
     /* Form Inputs */
-    .input-row {
-      display: flex;
-      gap: 20px;
-      margin: 20px 0;
-    }
+    .input-row { display: flex; gap: 20px; margin: 20px 0; }
     .input-group { flex: 1; }
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
     input[type="number"] {
       width: 100%;
       padding: 10px;
@@ -76,27 +94,15 @@
       gap: 18px;
       margin: 20px 0;
     }
-    @media (max-width: 650px) {
-      .guide-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 650px) { .guide-grid { grid-template-columns: 1fr; } }
     .guide-box {
       border: 1px solid #d1d5db;
       border-radius: 10px;
       padding: 14px;
       background: #f9fafb;
     }
-    .guide-title {
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-    .guide-steps {
-      font-size: 13px;
-      padding-left: 18px;
-      margin: 10px 0 0 0;
-      color: #374151;
-    }
+    .guide-title { font-weight: 700; color: #111827; margin-bottom: 8px; text-align: center; }
+    .guide-steps { font-size: 13px; padding-left: 18px; margin: 10px 0 0 0; color: #374151; }
 
     /* SMDS Table */
     .smds-item {
@@ -125,23 +131,9 @@
       background-color: #fafafa;
       user-select: none;
     }
-    .sart-digit {
-      font-size: 96px;
-      font-weight: 700;
-      color: #111827;
-    }
-    .stroop-word {
-      font-size: 64px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .feedback-text {
-      font-size: 20px;
-      font-weight: 600;
-      margin-top: 12px;
-      height: 28px;
-    }
+    .sart-digit { font-size: 96px; font-weight: 700; color: #111827; }
+    .stroop-word { font-size: 64px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    .feedback-text { font-size: 20px; font-weight: 600; margin-top: 12px; height: 28px; }
     .key-legend {
       display: flex;
       justify-content: center;
@@ -153,18 +145,35 @@
       padding: 10px;
       border-radius: 6px;
     }
-    .error-msg {
-      color: #dc2626;
-      font-weight: 600;
-      margin-top: 10px;
+    .error-msg { color: #dc2626; font-weight: 600; margin-top: 10px; }
+    .id-callout {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      color: #1e3a8a;
     }
   </style>
 </head>
 <body>
 
+  <!-- PERSISTENT ANONYMOUS ID HEADER -->
+  <div class="id-banner">
+    <span>PSYC 200 Research Study &bull; Anonymous Session</span>
+    <div>
+      <span>Your Session ID: </span>
+      <span id="top-id-display" class="id-badge">SUB_000000</span>
+    </div>
+  </div>
+
   <!-- SCREEN 1: INFORMED CONSENT -->
   <div id="screen-consent" class="card">
     <h2>Informed Consent for Research Participation</h2>
+    <div class="id-callout">
+      <strong>Your Anonymous Session ID is <span id="consent-id-display" style="font-family:monospace; font-size:15px;"></span></strong> (shown at the top of your screen throughout the study). Please mention this ID to the researcher if you experience any technical issues. It is never linked to your name or identity.
+    </div>
     <p><strong>Study Title:</strong> Digital Media Habits and Cognitive Task Performance</p>
     <p><strong>Purpose:</strong> You are invited to participate in a student research project in the Department of Psychology at Glendale Community College. The purpose of this study is to examine general patterns of daily digital device use and performance across visual cognitive tasks.</p>
     <p><strong>Procedure:</strong> If you agree to participate, you will:</p>
@@ -346,30 +355,49 @@
   <!-- SCREEN 10: COMPLETION & DEBRIEFING -->
   <div id="screen-end" class="card hidden">
     <h2>Study Complete — Thank You!</h2>
+    <div class="id-callout">
+      <strong>Completed Session ID: <span id="end-id-display" style="font-family:monospace; font-size:15px;"></span></strong><br/>
+      Your results have been automatically added to this lab station's master participant log (<span id="station-count">1</span> participant(s) logged on this computer).
+    </div>
     <p><strong>Debriefing:</strong> Thank you for participating in this research study. The purpose of this project is to examine whether daily social media screen time is associated with sustained attention slips (measured by the number task) and cognitive interference control (measured by the color-word matching task).</p>
-    <p>Your responses have been recorded anonymously. Please remain quietly seated until everyone in your session has finished.</p>
+    <p>Please remain quietly seated until everyone in your session has finished.</p>
+    
     <div style="background:#f3f4f6; padding:16px; border-radius:8px; margin-top:20px;">
-      <p style="margin-top:0; font-weight:600;">Participant Data Summary (Auto-Downloaded CSV):</p>
-      <pre id="summary-output" style="font-size:13px; overflow-x:auto;"></pre>
-      <button class="btn btn-secondary" onclick="downloadCSV()">Download CSV Again</button>
+      <p style="margin-top:0; font-weight:600;">Session Data & Researcher Controls:</p>
+      <pre id="summary-output" style="font-size:12.5px; overflow-x:auto; background:#fff; padding:10px; border-radius:6px; border:1px solid #d1d5db;"></pre>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">
+        <button class="btn btn-green" onclick="downloadMasterCSV()">Download Master Station CSV (All Participants)</button>
+        <button class="btn btn-slate" onclick="downloadSingleCSV()">Download This Participant Summary CSV</button>
+        <button class="btn btn-slate" onclick="downloadDetailedTrialsCSV()">Download Detailed Trial-by-Trial CSV</button>
+      </div>
     </div>
   </div>
 
 <script>
+  // Generate unique anonymous ID on load and display everywhere
+  const sessionID = "SUB_" + Math.floor(100000 + Math.random() * 900000);
+  document.getElementById("top-id-display").textContent = sessionID;
+  document.getElementById("consent-id-display").textContent = sessionID;
+  document.getElementById("end-id-display").textContent = sessionID;
+
   const studyData = {
-    participant_id: "SUB_" + Math.floor(100000 + Math.random() * 900000),
+    participant_id: sessionID,
     timestamp: new Date().toISOString(),
     daily_screen_time_hours: 0,
     smds_score: 0,
-    smds_responses: [],
+    smds_item_responses: "",
     sart_commission_errors: 0,
     sart_omission_errors: 0,
     sart_mean_rt_ms: 0,
+    sart_sd_rt_ms: 0,
     stroop_match_rt_ms: 0,
     stroop_mismatch_rt_ms: 0,
+    stroop_interference_cost_ms: 0,
     stroop_match_acc: 0,
     stroop_mismatch_acc: 0
   };
+
+  let detailedTrialLog = [];
 
   function goToScreen(screenId) {
     document.querySelectorAll(".card").forEach(el => el.classList.add("hidden"));
@@ -431,7 +459,7 @@
       total += val;
     }
     document.getElementById("smds-error").classList.add("hidden");
-    studyData.smds_responses = responses;
+    studyData.smds_item_responses = responses.join("|");
     studyData.smds_score = total;
     goToScreen("screen-sart-intro");
   }
@@ -492,7 +520,7 @@
           fbEl.textContent = "Too slow! Press SPACEBAR for numbers other than 3.";
           fbEl.style.color = "#d97706";
         }
-        sartResults.push({ digit, pressed: false, rt: null });
+        sartResults.push({ trial: sartIndex + 1, digit, pressed: false, rt: null });
       }
       sartIndex++;
       runNextSARTTrial();
@@ -505,7 +533,7 @@
     if (sartResponded || sartIndex >= sartTrials.length) return;
 
     sartResponded = true;
-    const rt = performance.now() - sartTrialStart;
+    const rt = Number((performance.now() - sartTrialStart).toFixed(2));
     const digit = sartTrials[sartIndex];
 
     if (sartIsPractice) {
@@ -518,7 +546,14 @@
         fbEl.style.color = "#059669";
       }
     }
-    sartResults.push({ digit, pressed: true, rt });
+    sartResults.push({ trial: sartIndex + 1, digit, pressed: true, rt });
+  }
+
+  function calcSD(arr) {
+    if (arr.length < 2) return 0;
+    const mean = arr.reduce((a, b) => a + b, 0) / arr.length;
+    const variance = arr.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / (arr.length - 1);
+    return Number(Math.sqrt(variance).toFixed(1));
   }
 
   function finishSART() {
@@ -532,14 +567,28 @@
     let rts = [];
 
     sartResults.forEach(r => {
-      if (r.digit === 3 && r.pressed) commErrors++;
-      if (r.digit !== 3 && !r.pressed) omErrors++;
-      if (r.digit !== 3 && r.pressed && r.rt !== null) rts.push(r.rt);
+      const isTargetNoGo = (r.digit === 3);
+      const isCorrect = isTargetNoGo ? !r.pressed : r.pressed;
+      if (isTargetNoGo && r.pressed) commErrors++;
+      if (!isTargetNoGo && !r.pressed) omErrors++;
+      if (!isTargetNoGo && r.pressed && r.rt !== null) rts.push(r.rt);
+
+      detailedTrialLog.push({
+        participant_id: sessionID,
+        task: "SART",
+        trial_num: r.trial,
+        stimulus: r.digit,
+        condition: isTargetNoGo ? "NoGo_3" : "Go",
+        response: r.pressed ? "Space" : "None",
+        correct: isCorrect ? 1 : 0,
+        rt_ms: r.rt ?? ""
+      });
     });
 
     studyData.sart_commission_errors = commErrors;
     studyData.sart_omission_errors = omErrors;
     studyData.sart_mean_rt_ms = rts.length ? Number((rts.reduce((a, b) => a + b, 0) / rts.length).toFixed(1)) : 0;
+    studyData.sart_sd_rt_ms = calcSD(rts);
 
     goToScreen("screen-stroop-intro");
   }
@@ -569,7 +618,7 @@
         const others = colors.filter(c => c.name !== wordObj.name);
         inkObj = others[Math.floor(Math.random() * others.length)];
       }
-      trials.push({ word: wordObj.name, ink: inkObj.hex, isMatch });
+      trials.push({ word: wordObj.name, inkName: inkObj.name, ink: inkObj.hex, isMatch });
     }
     return trials.sort(() => Math.random() - 0.5);
   }
@@ -614,12 +663,19 @@
     if (key !== "f" && key !== "j") return;
 
     stroopAccepting = false;
-    const rt = performance.now() - stroopTrialStart;
+    const rt = Number((performance.now() - stroopTrialStart).toFixed(2));
     const trial = stroopTrials[stroopIndex];
     const userSaidMatch = (key === "f");
     const correct = (userSaidMatch === trial.isMatch);
 
-    stroopResults.push({ isMatch: trial.isMatch, correct, rt });
+    stroopResults.push({
+      trial: stroopIndex + 1,
+      stimulus: `${trial.word}_in_${trial.inkName}`,
+      isMatch: trial.isMatch,
+      key,
+      correct,
+      rt
+    });
 
     if (stroopIsPractice) {
       const fbEl = document.getElementById("stroop-feedback");
@@ -642,6 +698,19 @@
       return;
     }
 
+    stroopResults.forEach(r => {
+      detailedTrialLog.push({
+        participant_id: sessionID,
+        task: "Stroop",
+        trial_num: r.trial,
+        stimulus: r.stimulus,
+        condition: r.isMatch ? "Match" : "Mismatch",
+        response: r.key.toUpperCase(),
+        correct: r.correct ? 1 : 0,
+        rt_ms: r.rt
+      });
+    });
+
     const matchTrials = stroopResults.filter(r => r.isMatch);
     const mismatchTrials = stroopResults.filter(r => !r.isMatch);
 
@@ -655,40 +724,89 @@
       ? Number((matchCorrect.reduce((a, b) => a + b.rt, 0) / matchCorrect.length).toFixed(1)) : 0;
     studyData.stroop_mismatch_rt_ms = mismatchCorrect.length
       ? Number((mismatchCorrect.reduce((a, b) => a + b.rt, 0) / mismatchCorrect.length).toFixed(1)) : 0;
+    studyData.stroop_interference_cost_ms = Number((studyData.stroop_mismatch_rt_ms - studyData.stroop_match_rt_ms).toFixed(1));
 
     completeStudy();
   }
 
-  function completeStudy() {
-    goToScreen("screen-end");
-    document.getElementById("summary-output").textContent = JSON.stringify(studyData, null, 2);
-    downloadCSV();
+  // ==========================================
+  // CUMULATIVE STORAGE & DUAL CSV DOWNLOADS
+  // ==========================================
+  const STORAGE_KEY = "psyc200_gcc_master_dataset";
+
+  function saveToStationMasterList(record) {
+    let existing = [];
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) existing = JSON.parse(raw);
+    } catch (e) { console.error(e); }
+    existing.push(record);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+    return existing;
   }
 
-  function downloadCSV() {
-    const headers = [
-      "participant_id",
-      "timestamp",
-      "daily_screen_time_hours",
-      "smds_score",
-      "sart_commission_errors",
-      "sart_omission_errors",
-      "sart_mean_rt_ms",
-      "stroop_match_rt_ms",
-      "stroop_mismatch_rt_ms",
-      "stroop_match_acc",
-      "stroop_mismatch_acc"
-    ];
-    const row = headers.map(h => studyData[h]).join(",");
-    const csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + row;
+  function completeStudy() {
+    const masterList = saveToStationMasterList(studyData);
+    document.getElementById("station-count").textContent = masterList.length;
+    goToScreen("screen-end");
+    document.getElementById("summary-output").textContent = JSON.stringify(studyData, null, 2);
+    
+    // Auto-download both the single summary and detailed trial log
+    downloadSingleCSV();
+    setTimeout(downloadDetailedTrialsCSV, 400);
+  }
 
-    const encodedUri = encodeURI(csvContent);
+  const summaryHeaders = [
+    "participant_id",
+    "timestamp",
+    "daily_screen_time_hours",
+    "smds_score",
+    "smds_item_responses",
+    "sart_commission_errors",
+    "sart_omission_errors",
+    "sart_mean_rt_ms",
+    "sart_sd_rt_ms",
+    "stroop_match_rt_ms",
+    "stroop_mismatch_rt_ms",
+    "stroop_interference_cost_ms",
+    "stroop_match_acc",
+    "stroop_mismatch_acc"
+  ];
+
+  function triggerCSVDownload(csvString, filename) {
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `${studyData.participant_id}_data.csv`);
+    link.href = url;
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  function downloadSingleCSV() {
+    const row = summaryHeaders.map(h => studyData[h]).join(",");
+    const csv = summaryHeaders.join(",") + "\n" + row;
+    triggerCSVDownload(csv, `${sessionID}_summary.csv`);
+  }
+
+  function downloadDetailedTrialsCSV() {
+    const headers = ["participant_id", "task", "trial_num", "stimulus", "condition", "response", "correct", "rt_ms"];
+    const rows = detailedTrialLog.map(item => headers.map(h => item[h]).join(","));
+    const csv = headers.join(",") + "\n" + rows.join("\n");
+    triggerCSVDownload(csv, `${sessionID}_detailed_trials.csv`);
+  }
+
+  function downloadMasterCSV() {
+    let list = [studyData];
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) list = JSON.parse(raw);
+    } catch (e) {}
+    const rows = list.map(rec => summaryHeaders.map(h => rec[h]).join(","));
+    const csv = summaryHeaders.join(",") + "\n" + rows.join("\n");
+    triggerCSVDownload(csv, `GCC_Lab_Master_Participants_${list.length}.csv`);
   }
 </script>
 </body>
